@@ -116,11 +116,11 @@ Congratulations! You have successfully deployed a three-tier architecture on AWS
 ##Testing
 If you go into your AWS console, you should be able to see the VPC and subnets, internet gateway, route tables and associations, EC2 instances running in the proper locations, load balancers, and RDS database.
 [vpc](../vpc-image)
-[subnet](../subnet-image)
-[ec2](../ec2-image)
-[lb](../lb-image)
-[tg](../tg-image)
-[db](../db-image)
+[subnet](./assets/subnet-image.png)
+[ec2](./assets/ec2-image.png)
+[lb](./assets/lb-image.png)
+[vpc](./assets/vpc-image.png)
+[db](./assets/db-image.png)
 If we copy the load balancer endpoint we got from our Terraform output, and place it in the search bar, we will see the message we specified in our script for the Apache webserver.
 If we refresh the page, we should see the IP address from the other instance in our frontend autoscaling group.
 Make sure to test out the infrastructure. You will need to use the keypair to SSH into the bastion host. Locate the public IP address of your Bastion Instance in the console:

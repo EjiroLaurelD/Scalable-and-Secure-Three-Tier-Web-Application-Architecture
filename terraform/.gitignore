@@ -1,0 +1,27 @@
+# Terraform state files
+*.tfstate
+*.tfstate.backup
+*.tfplan
+*.tfout
+
+# Crash log files
+crash.log
+
+# Exclude directories with sensitive data
+/.terraform
+/.terraform.lock.hcl
+
+# Exclude provider plugin cache directory
+/plugin-cache
+
+# Exclude any build or dependency directories
+/.hcl2
+/.terraformignore
+/terraform.*
+
+# Exclude editor-specific or system files
+*.swp
+.DS_Store
+.idea/
+.vscode/
+

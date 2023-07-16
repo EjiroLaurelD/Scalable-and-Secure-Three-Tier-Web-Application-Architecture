@@ -1,16 +1,15 @@
 
-​​# Three-Tier Architecture Deployment on AWS with Terraform
-For this project, I created a three-tier architecture  consisting of a Web tier , Application tier and a Database tier. I used Terraform modules to make the process easily repeatable and reusable.  This deployment will create a scalable, secure and highly available infrastructure that separates the web, application, and database layers. Ensuring they are all communicating with each other. The architecture includes an Amazon Virtual Private Cloud (VPC), Elastic Load Balancer (ELB), Auto Scaling Group (ASG), and a Relational Database(RDS).
-The Web tier will have a bastion host and NAT gateway provisioned in the public subnets. The bastion host will serve as our access point to the underlying infrastructure. The NAT Gateway will allow our private subnets to communicate with the internet  while maintaining  a level of security by hiding the private instances' private IP addresses from the public internet.
-In the Application tier, we will create an internet facing load balancer to direct internet traffic to an autoscaling group in the private subnets, along with a backend autoscaling group for our backend application. We will create a script to install the apache webserver in the frontend, and a script to install Node.js in the backend.
-In the Database tier, we will have another layer of private subnets hosting a MySQL database which will  eventually be accessed using Node.js..
+# ​​Three-Tier Architecture Deployment on AWS with Terraform
+For this project, I created a three-tier architecture  consisting of a Web tier, Application tier and a Database tier in private subnets with Autoscaling for the web and application tier and a load balancer. A Bastion Host and Nat gatway also provioned to allow ssh access to the instances and access to the internet. I used Terraform modules to make the process easily repeatable and reusable.  This deployment will create a scalable, secure and highly available infrastructure that separates the different layers ensuring they are all communicating with each other. The architecture includes an Amazon Virtual Private Cloud (VPC), Elastic Load Balancer (ELB), Auto Scaling Group (ASG), and a Relational Database(RDS).
+- The Web tier will have a bastion host and NAT gateway provisioned in the public subnets. The bastion host will serve as our access point to the underlying infrastructure. The NAT Gateway will allow our private subnets to communicate with the internet  while maintaining a level of security by hiding the private instances' private IP addresses from the public internet.
+- In the Application tier, we will create an internet facing load balancer to direct internet traffic to an autoscaling group in the private subnets, along with a backend autoscaling group for our backend application. We will create a script to install the apache webserver in the frontend, and a script to install Node.js in the backend.
+- In the Database tier, we will have another layer of private subnets hosting a MySQL database which will  eventually be accessed using Node.js..
  
 [Architecture diagram here](../cloudgen-architecture)
  
  
 I have provided a step-by-step guide to deploying this architecture on Amazon Web Services (AWS) using Terraform.
 
-Please note that this guide assumes you have basic knowledge of AWS services and Terraform. If you're new to AWS or Terraform, it's recommended to familiarize yourself with these technologies before proceeding.
  
 ## Prerequisites
  
@@ -55,11 +54,9 @@ Follow these step-by-step instructions to deploy a three-tier architecture on AW
 1. Open the project directory in a text editor.
 2. Locate the Terraform configuration file named `terraform.tfvars”. 
 3. Modify the values of the variables according to your requirements.
-   - `database_username`: Set the username for the database.
-   - `database_password`: Set the password for the database.
-   - `database_name`: Set the name of the database.
-   - `instance_type`: Set the EC2 instance type for the web servers.
-   - `desired_capacity`: Set the desired capacity for the Auto Scaling Group.
+   - `dbuser`: Set the username for the database.
+   - `dbpassword`: Set the password for the database.
+   - `db_name`: Set the name of the database.
 Do not forget to gitignore your .tfvars file 
  
 ### Step 4: Initialize Terraform
@@ -108,12 +105,8 @@ If you want to tear down the infrastructure and remove all resources created by 
    terraform destroy
    ```
    Type `yes` to confirm the destruction.
- 
-## Conclusion
- 
-Congratulations! You have successfully deployed a three-tier architecture on AWS using Terraform. This architecture provides a scalable and highly available infrastructure for your applications. Make sure to follow AWS best practices and security recommendations when deploying your production workloads.
 
-##Testing
+## Testing
 If you go into your AWS console, you should be able to see the VPC and subnets, internet gateway, route tables and associations, EC2 instances running in the proper locations, load balancers, and RDS database.
 [vpc](../vpc-image)
 [subnet](./assets/subnet-image.png)
@@ -131,4 +124,7 @@ Make sure to test out the infrastructure. You will need to use the keypair to SS
 
 
 
+## Conclusion
+ 
+Congratulations! You have successfully deployed a three-tier architecture on AWS using Terraform. This architecture provides a scalable and highly available infrastructure for your applications. Make sure to follow AWS best practices and security recommendations when deploying your production workloads.
 

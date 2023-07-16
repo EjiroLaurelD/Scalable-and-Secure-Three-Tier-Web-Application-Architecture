@@ -1,11 +1,11 @@
 
 # ​​Three-Tier Architecture Deployment on AWS with Terraform
-For this project, I created a three-tier architecture  consisting of a Web tier, Application tier and a Database tier in private subnets with Autoscaling for the web and application tier and a load balancer. A Bastion Host and Nat gatway also provioned to allow ssh access to the instances and access to the internet. I used Terraform modules to make the process easily repeatable and reusable.  This deployment will create a scalable, secure and highly available infrastructure that separates the different layers ensuring they are all communicating with each other. The architecture includes an Amazon Virtual Private Cloud (VPC), Elastic Load Balancer (ELB), Auto Scaling Group (ASG), and a Relational Database(RDS).
+This repo contains a three-tier architecture  consisting of a Web tier, Application tier and a Database tier in private subnets with Autoscaling for the web and application tier and a load balancer. A Bastion Host and Nat gatway provisioned to allow ssh access to the instances and access to the internet. Terraform modules were used to make the process easily repeatable and reusable.  This deployment will create a scalable, secure and highly available infrastructure that separates the different layers ensuring they are all communicating with each other. The architecture includes an Amazon Virtual Private Cloud (VPC), Elastic Load Balancer (ELB), Auto Scaling Group (ASG), and a Relational Database(RDS).
 - The Web tier will have a bastion host and NAT gateway provisioned in the public subnets. The bastion host will serve as our access point to the underlying infrastructure. The NAT Gateway will allow our private subnets to communicate with the internet  while maintaining a level of security by hiding the private instances' private IP addresses from the public internet.
 - In the Application tier, we will create an internet facing load balancer to direct internet traffic to an autoscaling group in the private subnets, along with a backend autoscaling group for our backend application. We will create a script to install the apache webserver in the frontend, and a script to install Node.js in the backend.
 - In the Database tier, we will have another layer of private subnets hosting a MySQL database which will  eventually be accessed using Node.js..
  
-[Architecture diagram here](../cloudgen-architecture)
+![Architecture diagram](./assets/3tier-architecture.png)
  
  
 I have provided a step-by-step guide to deploying this architecture on Amazon Web Services (AWS) using Terraform.
@@ -48,8 +48,15 @@ Follow these step-by-step instructions to deploy a three-tier architecture on AW
    aws configure
    ```
    Enter the access key ID and secret access key when prompted, and optionally set the default region.
- 
-### Step 3: Configure Terraform Variables
+
+### Step 3: Configure S3 bucket for state file storage
+1. Sign in to your AWS account.
+2. Open the Amazon S3 service.
+3. Click "Create Bucket" and configure basic settings like name and region.
+4. Optionally, enable features like versioning, logging, and encryption.
+5. Review settings and click "Create bucket."
+
+### Step 4: Configure Terraform Variables
  
 1. Open the project directory in a text editor.
 2. Locate the Terraform configuration file named `terraform.tfvars”. 
@@ -59,7 +66,7 @@ Follow these step-by-step instructions to deploy a three-tier architecture on AW
    - `db_name`: Set the name of the database.
 Do not forget to gitignore your .tfvars file 
  
-### Step 4: Initialize Terraform
+### Step 5: Initialize Terraform
  
 1. In the terminal or command prompt, navigate to the project directory., cd to the root directory ‘terraform’
 2. Run the following command to fix any syntax issue
@@ -71,7 +78,7 @@ Do not forget to gitignore your .tfvars file
    terraform init
    ```
  
-### Step 5: Review and Validate the Configuration
+### Step 6: Review and Validate the Configuration
  
 1. Run the following command to review the changes that Terraform will make:
    ```
@@ -79,7 +86,7 @@ Do not forget to gitignore your .tfvars file
    ```
    Review the output to ensure that the planned infrastructure matches your expectations.
  
-### Step 6: Deploy the Infrastructure
+### Step 7: Deploy the Infrastructure
  
 1. Run the following command to deploy the infrastructure:
    ```
@@ -89,13 +96,13 @@ Do not forget to gitignore your .tfvars file
  
 2. Wait for Terraform to provision the infrastructure. This process may take several minutes.
  
-### Step 7: Access the Application
+### Step 8: Access the Application
  
 1. After the deployment is complete, Terraform will output the DNS name of the ELB.
 2. Copy the DNS name and paste it into your web browser.
 3. If everything is set up correctly, you should see the application running.
  
-### Step 8: Destroy the Infrastructure (Optional)
+### Step 9: Destroy the Infrastructure (Optional)
  
 If you want to tear down the infrastructure and remove all resources created by Terraform, you can follow these steps:
  
@@ -106,13 +113,12 @@ If you want to tear down the infrastructure and remove all resources created by 
    ```
    Type `yes` to confirm the destruction.
 
-## Testing
+### Step 10: Confirm Infrastructure
 If you go into your AWS console, you should be able to see the VPC and subnets, internet gateway, route tables and associations, EC2 instances running in the proper locations, load balancers, and RDS database.
-![vpc](../vpc-image)
+![vpc](./assets/vpc-image.png)
 ![subnet](./assets/subnet-image.png)
 ![ec2](./assets/ec2-image.png)
 ![lb](./assets/lb-image.png)
-![vpc](./assets/vpc-image.png)
 ![db](./assets/db-image.png)
 
 If we copy the load balancer endpoint we got from our Terraform output, and place it in the search bar, we will see the message we specified in our script for the Apache webserver.
